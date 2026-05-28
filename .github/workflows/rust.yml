@@ -130,7 +130,9 @@ jobs:
 
       - name: Run tests
         run: |
-          cargo test --release --all-targets --all-features
+          cargo install --locked cargo-nextest
+          threads=$(cat /proc/cpuinfo  | grep processor | wc -l)
+          cargo nextest run --release --all-targets --all-features --test-threads ${threads} --fail-fast
 
       - name: Add WASM target
         run: rustup target add wasm32-unknown-unknown
